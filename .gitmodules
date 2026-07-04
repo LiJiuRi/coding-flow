@@ -1,0 +1,9 @@
+[submodule "comet"]
+	path = comet
+	url = git@github.com:rpamis/comet.git
+[submodule "openflow"]
+	path = openflow
+	url = git@github.com:lininn/openflow.git
+[submodule "spec-superflow"]
+	path = spec-superflow
+	url = git@github.com:MageByte-Zero/spec-superflow.git

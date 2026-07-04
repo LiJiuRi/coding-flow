@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <style>
+    text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .t-title { font-size: 19px; font-weight: 600; fill: #111827; }
+    .t-sub { font-size: 12.5px; fill: #6b7280; }
+    .t-st { font-size: 13px; font-weight: 600; fill: #111827; }
+    .t-st-sub { font-size: 10.5px; fill: #475569; }
+    .t-edge { font-size: 11.5px; fill: #1e3a8a; }
+    .t-edge-em { font-size: 11.5px; font-weight: 600; }
+    .t-note { font-size: 11px; fill: #6b7280; }
+  </style>
+  <rect width="1200" height="600" fill="#ffffff"/>
+  <defs>
+    <marker id="a-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="a-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#ea580c"/></marker>
+    <marker id="a-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#9333ea"/></marker>
+    <marker id="a-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#dc2626"/></marker>
+    <marker id="a-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#94a3b8"/></marker>
+    <marker id="a-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16a34a"/></marker>
+  </defs>
+  <text x="600" y="30" text-anchor="middle" class="t-title">spec-superflow 状态机：8 状态 + 转移规则（含 abandoned 终态）</text>
+  <text x="600" y="50" text-anchor="middle" class="t-sub">workflow-orchestrator/SKILL.md:33-40 · 每条路由前先跑 guard.mjs（exit≠0 即 BLOCK）· 内容级状态检测（proposal scope vs contract intent lock）</text>
+  <rect x="30.0" y="221.0" width="130" height="58" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.6"/>
+  <text x="95" y="246" text-anchor="middle" class="t-st">exploring</text>
+  <text x="95" y="262" text-anchor="middle" class="t-st-sub">探索·一问一问</text>
+  <rect x="190.0" y="221.0" width="130" height="58" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.6"/>
+  <text x="255" y="246" text-anchor="middle" class="t-st">specifying</text>
+  <text x="255" y="262" text-anchor="middle" class="t-st-sub">规格·产出4工件</text>
+  <rect x="350.0" y="221.0" width="130" height="58" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.6"/>
+  <text x="415" y="246" text-anchor="middle" class="t-st">bridging</text>
+  <text x="415" y="262" text-anchor="middle" class="t-st-sub">桥接·生成契约</text>
+  <rect x="525.0" y="221.0" width="150" height="58" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.6"/>
+  <text x="600" y="246" text-anchor="middle" class="t-st">approved-for-build</text>
+  <text x="600" y="262" text-anchor="middle" class="t-st-sub">已批准·DP-3</text>
+  <rect x="715.0" y="221.0" width="130" height="58" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.6"/>
+  <text x="780" y="246" text-anchor="middle" class="t-st">executing</text>
+  <text x="780" y="262" text-anchor="middle" class="t-st-sub">执行·TDD/SDD</text>
+  <rect x="880.0" y="221.0" width="130" height="58" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.6"/>
+  <text x="945" y="246" text-anchor="middle" class="t-st">closing</text>
+  <text x="945" y="262" text-anchor="middle" class="t-st-sub">收口·验证归档</text>
+  <rect x="1040.0" y="221.0" width="120" height="58" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="1.6"/>
+  <text x="1100" y="246" text-anchor="middle" class="t-st">✓ done</text>
+  <text x="1100" y="262" text-anchor="middle" class="t-st-sub">归档完成·sync</text>
+  <line x1="162.0" y1="250" x2="188.0" y2="250" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a-blue)"/>
+  <text x="175.0" y="242" text-anchor="middle" class="t-edge">探索收敛</text>
+  <line x1="322.0" y1="250" x2="348.0" y2="250" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a-blue)"/>
+  <text x="335.0" y="242" text-anchor="middle" class="t-edge">规格就绪</text>
+  <line x1="482.0" y1="250" x2="523.0" y2="250" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a-blue)"/>
+  <text x="502.5" y="242" text-anchor="middle" class="t-edge">contract 生成</text>
+  <line x1="677.0" y1="250" x2="713.0" y2="250" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a-blue)"/>
+  <text x="695.0" y="242" text-anchor="middle" class="t-edge">DP-3 用户批准</text>
+  <line x1="847.0" y1="250" x2="878.0" y2="250" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a-blue)"/>
+  <text x="862.5" y="242" text-anchor="middle" class="t-edge">任务全绿</text>
+  <line x1="1012.0" y1="250" x2="1038.0" y2="250" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a-blue)"/>
+  <text x="1025.0" y="242" text-anchor="middle" class="t-edge">验证通过</text>
+  <text x="690" y="265" text-anchor="middle" class="t-edge-em" fill="#b91c1c">⚠ 用户显式批准门禁</text>
+  <rect x="710.0" y="354.0" width="140" height="52" rx="10" fill="#fff7ed" stroke="#fb923c" stroke-width="1.6"/>
+  <text x="780" y="376" text-anchor="middle" class="t-st">debugging</text>
+  <text x="780" y="392" text-anchor="middle" class="t-st-sub">调试·4阶段根因</text>
+  <line x1="765" y1="280" x2="765" y2="353" stroke="#ea580c" stroke-width="1.7" marker-end="url(#a-orange)"/>
+  <text x="722" y="320" class="t-edge" fill="#9a3412">遇 bug</text>
+  <line x1="795" y1="353" x2="795" y2="280" stroke="#ea580c" stroke-width="1.7" marker-end="url(#a-orange)"/>
+  <text x="838" y="320" class="t-edge" fill="#9a3412">修复后回</text>
+  <path d="M 780 407 C 780 450, 780 460, 780 472" fill="none" stroke="#9333ea" stroke-width="1.6" stroke-dasharray="5,3" marker-end="url(#a-purple)"/>
+  <rect x="690" y="475" width="180" height="50" rx="8" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1.5"/>
+  <text x="780" y="495" text-anchor="middle" class="t-st" fill="#6b21a8">升级用户（质疑架构）</text>
+  <text x="780" y="512" text-anchor="middle" class="t-st-sub">≥3 次修复失败 → each fix reveals new problem</text>
+  <text x="780" y="525" text-anchor="middle" class="t-st-sub">→ 与用户讨论，不打补丁</text>
+  <path d="M 780 221 C 780 150, 415 150, 415 221" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="6,3" marker-end="url(#a-red)"/>
+  <text x="597" y="145" text-anchor="middle" class="t-edge-em" fill="#b91c1c">contract drift → re-bridge（重新桥接）</text>
+  <path d="M 380 221 C 380 185, 290 185, 290 221" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="6,3" marker-end="url(#a-red)"/>
+  <text x="335" y="180" text-anchor="middle" class="t-edge-em" fill="#b91c1c">scope change → re-specify</text>
+  <path d="M 95 221 C 95 100, 600 100, 600 221" fill="none" stroke="#16a34a" stroke-width="1.4" stroke-dasharray="4,3" marker-end="url(#a-green)"/>
+  <text x="347" y="98" text-anchor="middle" class="t-edge-em" fill="#15803d">hotfix 快速路径（最小契约 · 跳过 specifying/bridging 细节）</text>
+  <rect x="1015.0" y="378.0" width="150" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.4"/>
+  <text x="1090" y="406" text-anchor="middle" class="t-st">abandoned</text>
+  <text x="1090" y="422" text-anchor="middle" class="t-st-sub">终态·禁止出向</text>
+  <path d="M 945 280 C 945 350, 1000 380, 1050 392" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-gray)"/>
+  <text x="1015" y="350" class="t-edge" fill="#475569">任意非终态</text>
+  <text x="1015" y="366" class="t-note">（需用户确认 · 不自动放弃）</text>
+  <text x="1090" y="500" text-anchor="middle" class="t-note" fill="#475569">不合并 abandoned 变更的 delta spec</text>
+  <rect x="30" y="540" width="1140" height="48" rx="6" fill="#f9fafb" stroke="#e5e7eb"/>
+  <line x1="46" y1="566" x2="70" y2="566" stroke="#2563eb" stroke-width="1.8" marker-end="url(#a-blue)"/>
+  <text x="76" y="570" class="t-note">主转移（每路由前 guard.mjs 校验）</text>
+  <line x1="238" y1="566" x2="262" y2="566" stroke="#ea580c" stroke-width="1.8" marker-end="url(#a-orange)"/>
+  <text x="268" y="570" class="t-note">debugging 旁路（双向）</text>
+  <line x1="430" y1="566" x2="454" y2="566" stroke="#9333ea" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#a-purple)"/>
+  <text x="460" y="570" class="t-note">升级用户（虚线）</text>
+  <line x1="622" y1="566" x2="646" y2="566" stroke="#dc2626" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#a-red)"/>
+  <text x="652" y="570" class="t-note">回退：drift/scope（虚线）</text>
+  <line x1="814" y1="566" x2="838" y2="566" stroke="#16a34a" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#a-green)"/>
+  <text x="844" y="570" class="t-note">hotfix 快速路径（虚线）</text>
+  <line x1="1006" y1="566" x2="1030" y2="566" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#a-gray)"/>
+  <text x="1036" y="570" class="t-note">放弃 → 终态（虚线）</text>
+</svg>

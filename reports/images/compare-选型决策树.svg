@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860">
+  <style>
+    text { font-family: 'Comic Sans MS', 'Microsoft YaHei', 'PingFang SC', 'Segoe UI', sans-serif; }
+    .t-title { font-size: 24px; font-weight: 700; fill: #2b2b2b; }
+    .t-sub { font-size: 13px; fill: #6b6256; font-style: italic; }
+    .t-root { font-size: 14px; font-weight: 700; fill: #2b2b2b; }
+    .t-q { font-size: 12.5px; font-weight: 600; fill: #2b2b2b; }
+    .t-out { font-size: 17px; font-weight: 700; }
+    .t-why { font-size: 11px; fill: #4a4438; }
+    .t-yn { font-size: 12px; font-weight: 700; }
+    .t-cap { font-size: 12px; fill: #6b6256; font-style: italic; }
+    .t-sticky { font-size: 10.5px; fill: #5a4a2a; }
+  </style>
+  <rect width="1200" height="860" fill="#fbf7f0"/>
+  <defs><pattern id="dots3" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.7" fill="#e2d9c8"/></pattern></defs>
+  <rect width="1200" height="860" fill="url(#dots3)"/>
+  <rect x="14" y="14" width="1172" height="832" rx="6" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round"/>
+  <rect x="17" y="11" width="1166" height="838" rx="6" fill="none" stroke="#2b2b2b" stroke-width="1" opacity="0.35"/>
+  <defs>
+    <marker id="hd-ink" markerWidth="11" markerHeight="9" refX="9" refY="4.5" orient="auto"><polygon points="0 0,10 4.5,0 9" fill="#2b2b2b"/></marker>
+    <marker id="hd-green" markerWidth="11" markerHeight="9" refX="9" refY="4.5" orient="auto"><polygon points="0 0,10 4.5,0 9" fill="#4a7c59"/></marker>
+  </defs>
+  <text x="600" y="50" text-anchor="middle" class="t-title">选型决策树</text>
+  <path d="M 500,60 q 7.142857142857143,-3 14.285714285714286,0 q 7.142857142857143,3 14.285714285714286,0 q 7.142857142857143,-3 14.285714285714286,0 q 7.142857142857143,3 14.285714285714286,0 q 7.142857142857143,-3 14.285714285714286,0 q 7.142857142857143,3 14.285714285714286,0 q 7.142857142857143,-3 14.285714285714286,0 q 7.142857142857143,3 14.285714285714286,0 q 7.142857142857143,-3 14.285714285714286,0 q 7.142857142857143,3 14.285714285714286,0 q 7.142857142857143,-3 14.285714285714286,0 q 7.142857142857143,3 14.285714285714286,0 q 7.142857142857143,-3 14.285714285714286,0 q 7.142857142857143,3 14.285714285714286,0 " fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round"/>
+  <text x="600" y="80" text-anchor="middle" class="t-sub">按需求画像逐步判断 · 四个出口 · 复杂度与能力递增</text>
+  <rect x="320" y="100" width="560" height="50" rx="7" fill="#ffffff" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-0.4 600.0 125.0)"/>
+  <rect x="322.2" y="98.4" width="560" height="50" rx="7" fill="none" stroke="#2b2b2b" stroke-width="1" opacity="0.3" transform="rotate(-0.4 600.0 125.0)"/>
+  <text x="600" y="130" text-anchor="middle" class="t-root">开始：要把 OpenSpec 规划纪律 + Superpowers 执行纪律 统一进 AI 编程工作流？</text>
+  <path d="M 880 125 Q 980 125 980 95" fill="none" stroke="#2b2b2b" stroke-width="1.6" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="908" y="118" class="t-yn" fill="#b85450">否</text>
+  <path d="M 950,70 L 1141,70 L 1150,79 L 1150,112 L 950,112 Z" fill="#fff4c2" stroke="#d9c27a" stroke-width="1.3" transform="rotate(2 1050.0 91.0)"/>
+  <path d="M 1141,70 L 1141,79 L 1150,79" fill="none" stroke="#d9c27a" stroke-width="1.1" transform="rotate(2 1050.0 91.0)"/>
+  <text x="1050.0" y="88" text-anchor="middle" class="t-sticky" transform="rotate(2 1050.0 91.0)">都不需要 → 维持现状</text>
+  <line x1="600" y1="150" x2="300" y2="178" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="455" y="170" class="t-yn" fill="#4a7c59">是</text>
+  <polygon points="125,235 300,185 475,235 300,285" fill="#fff8e1" stroke="#2b2b2b" stroke-width="1.8" stroke-linejoin="round" transform="rotate(-0.6 300 235)"/>
+  <polygon points="127.2,233.4 302.2,183.4 477.2,233.4 302.2,283.4" fill="none" stroke="#2b2b2b" stroke-width="1" opacity="0.3" transform="rotate(-0.6 300 235)"/>
+  <text x="300" y="228" text-anchor="middle" class="t-q">追求极简·可组合·跟随上游？</text>
+  <text x="300" y="247" text-anchor="middle" class="t-q">4 大平台够用？</text>
+  <line x1="475" y1="235" x2="548" y2="235" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="510" y="228" text-anchor="middle" class="t-yn" fill="#4a7c59">是</text>
+  <rect x="550" y="200" width="230" height="70" rx="7" fill="#eaf1f8" stroke="#3b6ea5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(0.8 665.0 235.0)"/>
+  <rect x="552.2" y="198.4" width="230" height="70" rx="7" fill="none" stroke="#3b6ea5" stroke-width="1" opacity="0.3" transform="rotate(0.8 665.0 235.0)"/>
+  <text x="665" y="228" text-anchor="middle" class="t-out" fill="#3b6ea5">✓ openflow</text>
+  <text x="665" y="250" text-anchor="middle" class="t-why">极薄编排器 · 零嵌入 · 平台 4</text>
+  <path d="M 820,205 L 991,205 L 1000,214 L 1000,265 L 820,265 Z" fill="#fff4c2" stroke="#d9c27a" stroke-width="1.3" transform="rotate(3 910.0 235.0)"/>
+  <path d="M 991,205 L 991,214 L 1000,214" fill="none" stroke="#d9c27a" stroke-width="1.1" transform="rotate(3 910.0 235.0)"/>
+  <text x="910.0" y="223" text-anchor="middle" class="t-sticky" transform="rotate(3 910.0 235.0)">适合：小团队/开源项目</text>
+  <text x="910.0" y="237" text-anchor="middle" class="t-sticky" transform="rotate(3 910.0 235.0)">不在意手动降级</text>
+  <text x="910.0" y="251" text-anchor="middle" class="t-sticky" transform="rotate(3 910.0 235.0)">想跟随上游演进</text>
+  <line x1="300" y1="285" x2="300" y2="318" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="312" y="305" class="t-yn" fill="#b85450">否</text>
+  <polygon points="120,370 300,318 480,370 300,422" fill="#fff8e1" stroke="#2b2b2b" stroke-width="1.8" stroke-linejoin="round" transform="rotate(0.5 300 370)"/>
+  <polygon points="122.2,368.4 302.2,316.4 482.2,368.4 302.2,420.4" fill="none" stroke="#2b2b2b" stroke-width="1" opacity="0.3" transform="rotate(0.5 300 370)"/>
+  <text x="300" y="362" text-anchor="middle" class="t-q">要自包含·强约束·内容级</text>
+  <text x="300" y="380" text-anchor="middle" class="t-q">状态检测？能维护内嵌引擎？</text>
+  <line x1="480" y1="370" x2="548" y2="370" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="514" y="363" text-anchor="middle" class="t-yn" fill="#4a7c59">是</text>
+  <rect x="550" y="335" width="230" height="70" rx="7" fill="#f1eef7" stroke="#6b5b95" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-0.8 665.0 370.0)"/>
+  <rect x="552.2" y="333.4" width="230" height="70" rx="7" fill="none" stroke="#6b5b95" stroke-width="1" opacity="0.3" transform="rotate(-0.8 665.0 370.0)"/>
+  <text x="665" y="363" text-anchor="middle" class="t-out" fill="#6b5b95">✓ spec-superflow</text>
+  <text x="665" y="385" text-anchor="middle" class="t-why">源码融合 · 软+硬门禁 · 平台 7+</text>
+  <path d="M 820,340 L 991,340 L 1000,349 L 1000,400 L 820,400 Z" fill="#fff4c2" stroke="#d9c27a" stroke-width="1.3" transform="rotate(-3 910.0 370.0)"/>
+  <path d="M 991,340 L 991,349 L 1000,349" fill="none" stroke="#d9c27a" stroke-width="1.1" transform="rotate(-3 910.0 370.0)"/>
+  <text x="910.0" y="358" text-anchor="middle" class="t-sticky" transform="rotate(-3 910.0 370.0)">适合：中型团队/严肃工程</text>
+  <text x="910.0" y="372" text-anchor="middle" class="t-sticky" transform="rotate(-3 910.0 370.0)">要可检查的意图契约</text>
+  <text x="910.0" y="386" text-anchor="middle" class="t-sticky" transform="rotate(-3 910.0 370.0)">能承担引擎维护</text>
+  <line x1="300" y1="422" x2="300" y2="458" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="312" y="445" class="t-yn" fill="#b85450">否</text>
+  <polygon points="115,515 300,459 485,515 300,571" fill="#fff8e1" stroke="#2b2b2b" stroke-width="1.8" stroke-linejoin="round" transform="rotate(-0.5 300 515)"/>
+  <polygon points="117.2,513.4 302.2,457.4 487.2,513.4 302.2,569.4" fill="none" stroke="#2b2b2b" stroke-width="1" opacity="0.3" transform="rotate(-0.5 300 515)"/>
+  <text x="300" y="505" text-anchor="middle" class="t-q">需 Skill 创作/分发 + 确定性</text>
+  <text x="300" y="523" text-anchor="middle" class="t-q">可恢复 + Windows 原生？</text>
+  <text x="300" y="540" text-anchor="middle" class="t-q">（需 33 平台？）</text>
+  <line x1="485" y1="515" x2="548" y2="515" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="516" y="508" text-anchor="middle" class="t-yn" fill="#b85450">否</text>
+  <rect x="550" y="480" width="230" height="70" rx="7" fill="#f5f5f5" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(0.8 665.0 515.0)"/>
+  <rect x="552.2" y="478.4" width="230" height="70" rx="7" fill="none" stroke="#888888" stroke-width="1" opacity="0.3" transform="rotate(0.8 665.0 515.0)"/>
+  <text x="665" y="508" text-anchor="middle" class="t-out" fill="#555555">✗ 三者都不选</text>
+  <text x="665" y="530" text-anchor="middle" class="t-why">不需要 spec-driven 纪律</text>
+  <path d="M 820,485 L 991,485 L 1000,494 L 1000,545 L 820,545 Z" fill="#fff4c2" stroke="#d9c27a" stroke-width="1.3" transform="rotate(3 910.0 515.0)"/>
+  <path d="M 991,485 L 991,494 L 1000,494" fill="none" stroke="#d9c27a" stroke-width="1.1" transform="rotate(3 910.0 515.0)"/>
+  <text x="910.0" y="503" text-anchor="middle" class="t-sticky" transform="rotate(3 910.0 515.0)">项目过小 / 已有成熟流程</text>
+  <text x="910.0" y="517" text-anchor="middle" class="t-sticky" transform="rotate(3 910.0 515.0)">团队不适应铁律约束</text>
+  <text x="910.0" y="531" text-anchor="middle" class="t-sticky" transform="rotate(3 910.0 515.0)">或直接用 OpenSpec+SP</text>
+  <line x1="300" y1="571" x2="300" y2="608" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-ink)"/>
+  <text x="312" y="595" class="t-yn" fill="#4a7c59">是</text>
+  <polygon points="125,665 300,613 475,665 300,717" fill="#fff8e1" stroke="#2b2b2b" stroke-width="1.8" stroke-linejoin="round" transform="rotate(0.5 300 665)"/>
+  <polygon points="127.2,663.4 302.2,611.4 477.2,663.4 302.2,715.4" fill="none" stroke="#2b2b2b" stroke-width="1" opacity="0.3" transform="rotate(0.5 300 665)"/>
+  <text x="300" y="657" text-anchor="middle" class="t-q">能接受高复杂度？</text>
+  <text x="300" y="675" text-anchor="middle" class="t-q">（9 领域 ~110 .ts）</text>
+  <line x1="475" y1="665" x2="548" y2="665" stroke="#2b2b2b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#hd-green)"/>
+  <text x="510" y="658" text-anchor="middle" class="t-yn" fill="#4a7c59">是</text>
+  <rect x="550" y="630" width="230" height="70" rx="7" fill="#eaf3ec" stroke="#4a7c59" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-0.8 665.0 665.0)"/>
+  <rect x="552.2" y="628.4" width="230" height="70" rx="7" fill="none" stroke="#4a7c59" stroke-width="1" opacity="0.3" transform="rotate(-0.8 665.0 665.0)"/>
+  <text x="665" y="658" text-anchor="middle" class="t-out" fill="#4a7c59">✓ comet</text>
+  <text x="665" y="680" text-anchor="middle" class="t-why">Node-only 平台 · 独有 Skill 创作 · 33 平台</text>
+  <path d="M 820,635 L 991,635 L 1000,644 L 1000,695 L 820,695 Z" fill="#fff4c2" stroke="#d9c27a" stroke-width="1.3" transform="rotate(-3 910.0 665.0)"/>
+  <path d="M 991,635 L 991,644 L 1000,644" fill="none" stroke="#d9c27a" stroke-width="1.1" transform="rotate(-3 910.0 665.0)"/>
+  <text x="910.0" y="653" text-anchor="middle" class="t-sticky" transform="rotate(-3 910.0 665.0)">适合：平台团队/工具建设</text>
+  <text x="910.0" y="667" text-anchor="middle" class="t-sticky" transform="rotate(-3 910.0 665.0)">要可恢复·可校验·可发行</text>
+  <text x="910.0" y="681" text-anchor="middle" class="t-sticky" transform="rotate(-3 910.0 665.0)">Windows 原生刚需</text>
+  <path d="M 300 717 Q 300 760 540 760 L 866 760 L 866 705" fill="none" stroke="#2b2b2b" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="5,4" marker-end="url(#hd-ink)"/>
+  <text x="312" y="740" class="t-yn" fill="#b85450">否</text>
+  <rect x="866" y="670" width="200" height="60" rx="7" fill="#f1eef7" stroke="#6b5b95" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" transform="rotate(0.8 966.0 700.0)"/>
+  <rect x="868.2" y="668.4" width="200" height="60" rx="7" fill="none" stroke="#6b5b95" stroke-width="1" opacity="0.3" transform="rotate(0.8 966.0 700.0)"/>
+  <text x="966" y="695" text-anchor="middle" class="t-out" fill="#6b5b95" font-size="14">↩ spec-superflow</text>
+  <text x="966" y="714" text-anchor="middle" class="t-why">（降级选择）</text>
+  <rect x="60" y="790" width="1080" height="46" rx="8" fill="#fff8e1" stroke="#d9c27a"/>
+  <text x="78" y="812" class="t-cap" font-weight="700" fill="#5a4a2a">核心推荐：</text>
+  <text x="160" y="812" class="t-cap">三者不互斥 —— 理想形态是 contract 锁意图 + plan 给细节 + handoff 防漂移；comet 的 build 仍依赖 Superpowers plan，故可与 SP 并存</text>
+  <text x="78" y="828" class="t-cap" fill="#6b6256">组合建议：openflow 做轻量编排入门 → spec-superflow 做工程主力 → comet 做平台化/发行；按团队规模与复杂度耐受度递进采用</text>
+</svg>

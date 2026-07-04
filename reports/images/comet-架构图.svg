@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" width="1100" height="640">
+  <style>
+    text { font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif; }
+    .t-title { font-size: 19px; font-weight: 600; fill: #111827; }
+    .t-sub { font-size: 12.5px; fill: #6b7280; }
+    .t-h { font-size: 13px; font-weight: 600; fill: #111827; }
+    .t-b { font-size: 11px; fill: #475569; }
+    .t-layer { font-size: 11px; font-weight: 600; fill: #9ca3af; letter-spacing: 1px; }
+    .t-chip { font-size: 10.5px; fill: #1e3a8a; }
+    .t-edge { font-size: 11px; fill: #374151; }
+    .t-note { font-size: 11px; fill: #6b7280; }
+  </style>
+  <rect width="1100" height="640" fill="#ffffff"/>
+  <defs>
+    <marker id="a-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#94a3b8"/></marker>
+    <marker id="a-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#ea580c"/></marker>
+    <marker id="a-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
+    <marker id="a-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16a34a"/></marker>
+  </defs>
+  <text x="550" y="30" text-anchor="middle" class="t-title">comet 整体架构：五层分层 + 架构 linter 强约束</text>
+  <text x="550" y="50" text-anchor="middle" class="t-sub">从 Bash 脚本编排升级为 Node-only Skill 运行时平台 · 9 个领域 ~110 个 .ts · 33 平台 · 99 测试</text>
+  <rect x="40" y="72" width="700" height="410" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="56" y="91" class="t-layer">仓库五层（config/repository-layout.json 约定）</text>
+  <rect x="56" y="100" width="668" height="58" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+  <text x="68" y="117" class="t-layer">L1 · app/（CLI 入口 + 命令编排）</text>
+  <text x="390" y="135" text-anchor="middle" class="t-h">app/cli + app/commands（只组合 domain/platform，不承载领域规则）</text>
+  <text x="390" y="151" text-anchor="middle" class="t-b">11 组命令：init · status · dashboard · doctor · update · uninstall · eval · skill · creator · publish · bundle</text>
+  <rect x="56" y="166" width="668" height="120" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+  <text x="68" y="183" class="t-layer">L2 · domains/（9 个业务领域 · 独立可维护模块）</text>
+  <rect x="68" y="192" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="76" y="208" class="t-chip" font-weight="600">comet-classic</text>
+  <text x="268" y="208" text-anchor="end" class="t-b" font-size="9.5">确定性状态机·28ts</text>
+  <rect x="286" y="192" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="294" y="208" class="t-chip" font-weight="600">engine</text>
+  <text x="486" y="208" text-anchor="end" class="t-b" font-size="9.5">Skill 执行引擎</text>
+  <rect x="504" y="192" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="512" y="208" class="t-chip" font-weight="600">bundle</text>
+  <text x="704" y="208" text-anchor="end" class="t-b" font-size="9.5">Skill 创作/编译/发布</text>
+  <rect x="68" y="222" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="76" y="238" class="t-chip" font-weight="600">workflow-contract</text>
+  <text x="268" y="238" text-anchor="end" class="t-b" font-size="9.5">工作流契约深模块</text>
+  <rect x="286" y="222" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="294" y="238" class="t-chip" font-weight="600">integrations</text>
+  <text x="486" y="238" text-anchor="end" class="t-b" font-size="9.5">OpenSpec/Superpowers</text>
+  <rect x="504" y="222" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="512" y="238" class="t-chip" font-weight="600">dashboard</text>
+  <text x="704" y="238" text-anchor="end" class="t-b" font-size="9.5">本地 HTTP 可视化</text>
+  <rect x="68" y="252" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="76" y="268" class="t-chip" font-weight="600">skill</text>
+  <text x="268" y="268" text-anchor="end" class="t-b" font-size="9.5">skill 安装/部署</text>
+  <rect x="286" y="252" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="294" y="268" class="t-chip" font-weight="600">eval</text>
+  <text x="486" y="268" text-anchor="end" class="t-b" font-size="9.5">eval harness</text>
+  <rect x="504" y="252" width="208" height="25" rx="5" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+  <text x="512" y="268" class="t-chip" font-weight="600">comet-yaml</text>
+  <text x="704" y="268" text-anchor="end" class="t-b" font-size="9.5">字段 schema</text>
+  <rect x="56" y="294" width="668" height="52" rx="8" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1.5"/>
+  <text x="68" y="311" class="t-layer">L3 · platform/（平台差异封装）</text>
+  <text x="390" y="329" text-anchor="middle" class="t-h">platform/install/platforms.ts · 33 平台路径检测 + copy/symlink 安装</text>
+  <rect x="56" y="352" width="668" height="52" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="68" y="369" class="t-layer">L4 · scripts/（构建 + 守门）</text>
+  <text x="390" y="387" text-anchor="middle" class="t-h">scripts/build（esbuild 打包 .mjs）· scripts/lint/architecture.mjs（架构 linter）</text>
+  <rect x="56" y="410" width="668" height="62" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5"/>
+  <text x="68" y="427" class="t-layer">L5 · assets/（可执行 Skill 包）</text>
+  <text x="390" y="445" text-anchor="middle" class="t-h">comet-open · comet-design · comet-build · comet-verify · comet-archive</text>
+  <text x="390" y="461" text-anchor="middle" class="t-b">+ comet-hotfix / comet-tweak（预设）· /comet intent-frame 路由入口</text>
+  <rect x="770" y="100" width="305" height="286" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.8"/>
+  <text x="922" y="124" text-anchor="middle" class="t-h" fill="#92400e">architecture.mjs（强约束守门人）</text>
+  <text x="922" y="140" text-anchor="middle" class="t-b" fill="#92400e">scripts/lint/architecture.mjs · 接入 pnpm lint + CI 独立步骤</text>
+  <rect x="786" y="162" width="273" height="28" rx="5" fill="#ffffff" stroke="#fde68a"/>
+  <text x="794" y="180" class="t-b">✓ 源码根断言 = [app, domains, platform]</text>
+  <rect x="786" y="196" width="273" height="28" rx="5" fill="#ffffff" stroke="#fde68a"/>
+  <text x="794" y="214" class="t-b">✓ 测试根断言 = [test]</text>
+  <rect x="786" y="230" width="273" height="28" rx="5" fill="#ffffff" stroke="#fde68a"/>
+  <text x="794" y="248" class="t-b">✓ 子模块名必须与配置精确匹配</text>
+  <rect x="786" y="264" width="273" height="28" rx="5" fill="#ffffff" stroke="#fde68a"/>
+  <text x="794" y="282" class="t-b">✓ test/domains/&lt;x&gt; 必须有匹配的 domains/&lt;x&gt;</text>
+  <rect x="786" y="298" width="273" height="28" rx="5" fill="#ffffff" stroke="#fde68a"/>
+  <text x="794" y="316" class="t-b">✓ package.json 的 lint 必须包含 lint:architecture</text>
+  <rect x="786" y="332" width="273" height="28" rx="5" fill="#ffffff" stroke="#fde68a"/>
+  <text x="794" y="350" class="t-b">✓ CI 独立 job（约束本身也被约束）</text>
+  <path d="M 770 200 L 740 200 L 740 130 L 724 130" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a-orange)"/>
+  <path d="M 770 250 L 740 250 L 740 220 L 724 220" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a-orange)"/>
+  <text x="744" y="172" class="t-edge" fill="#92400e" font-size="10">每层断言</text>
+  <rect x="770" y="400" width="305" height="82" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="786" y="420" class="t-h">关键纪律</text>
+  <text x="786" y="438" class="t-b">• app/ 只组合 domain/platform</text>
+  <text x="786" y="454" class="t-b">• domain/ 不散落平台差异</text>
+  <text x="786" y="470" class="t-b">• 改 runtime 源码必须构建同步</text>
+  <rect x="40" y="500" width="1035" height="120" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="56" y="522" class="t-h" fill="#1e3a8a">Node-only runtime（独有创新 · 消除 Bash/Git Bash/WSL 依赖）</text>
+  <text x="56" y="542" class="t-b">domains/comet-classic（纯 TS 确定性状态机）→ esbuild 打包 → 7 个 Node .mjs 启动器 → skill 调用 node "$COMET_STATE" &lt;cmd&gt;</text>
+  <text x="56" y="558" class="t-b">只依赖 Node.js · Windows 原生可用 · 无 LLM · 无网络 · 纯函数</text>
+  <line x1="56" y1="572" x2="1059" y2="572" stroke="#dbeafe"/>
+  <text x="56" y="592" class="t-h" fill="#15803d">Skill 部署：分发到 33 个 AI 编码平台</text>
+  <text x="56" y="610" class="t-b">platforms.ts 检测路径 → copy 或 symlink 安装 · OpenSpec 镜像 + Superpowers staging · npm 依赖多选 + .comet/config.yaml 字段级 merge</text>
+</svg>
