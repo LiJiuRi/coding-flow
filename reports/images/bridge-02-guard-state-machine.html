@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>guard.mjs 硬门禁 · 状态机与五维度校验</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'JetBrains Mono', monospace; background: #020617; min-height: 100vh; padding: 2rem; color: white; }
+    .container { max-width: 1240px; margin: 0 auto; }
+    .header { margin-bottom: 1.5rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot { width: 12px; height: 12px; background: #fb7185; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container { background: rgba(15,23,42,0.5); border-radius: 1rem; border: 1px solid #1e293b; padding: 1.5rem; overflow-x: auto; }
+    svg { width: 100%; min-width: 1000px; display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .card { background: rgba(15,23,42,0.5); border-radius: 0.75rem; border: 1px solid #1e293b; padding: 1.25rem; }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.cyan { background: #22d3ee; } .card-dot.emerald { background: #34d399; } .card-dot.violet { background: #a78bfa; } .card-dot.amber { background: #fbbf24; } .card-dot.rose { background: #fb7185; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.72rem; }
+    .card li { margin-bottom: 0.4rem; line-height: 1.45; }
+    .card li b { color: #cbd5e1; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+    .toolbar { display: flex; gap: 0.5rem; margin-left: auto; flex-shrink: 0; align-items: center; }
+    .toolbar-toggle { background: transparent; border: none; color: #475569; cursor: pointer; font-size: 1.25rem; line-height: 1; padding: 0.25rem 0.5rem; border-radius: 0.375rem; transition: color 0.2s, background 0.2s; }
+    .toolbar-toggle:hover { color: #94a3b8; background: rgba(30,41,59,0.5); }
+    .toolbar-actions { display: none; gap: 0.5rem; }
+    .toolbar.expanded .toolbar-actions { display: flex; }
+    .toolbar-actions button { background: rgba(30,41,59,0.8); border: 1px solid #334155; color: #94a3b8; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-family: inherit; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .toolbar-actions button:hover { background: rgba(51,65,85,0.8); color: white; border-color: #475569; }
+    @media print { body { background: #020617; padding: 1rem; } .toolbar { display: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="container" id="report-container">
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>guard.mjs 硬门禁 · 状态机与五维度校验</h1>
+        <div class="toolbar">
+          <div class="toolbar-actions">
+            <button onclick="copyAsImage(this)">📋 Copy</button>
+            <button onclick="downloadPNG(this)">🖼️ PNG</button>
+            <button onclick="downloadPDF(this)">📄 PDF</button>
+          </div>
+          <button class="toolbar-toggle" onclick="this.parentElement.classList.toggle('expanded')" title="Export options" aria-label="Export options">⋯</button>
+        </div>
+      </div>
+      <p class="subtitle">contract-builder 桥接层的「硬约束」实现：每条状态转移要求若干 check 维度，bridging → approved-for-build 是最严的一跳（4 维度），任一失败 guard.mjs exit 1 拦截</p>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1200 720">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748b" /></marker>
+          <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24" /></marker>
+          <marker id="ah-slate" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" /></marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- ============ REWIND ARCS (top, amber dashed) ============ -->
+        <path d="M 680 106 Q 582 70 485 106" fill="none" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-amber)"/>
+        <text x="582" y="64" fill="#fbbf24" font-size="8" text-anchor="middle">rewind · 契约漂移</text>
+        <path d="M 875 106 Q 680 52 485 106" fill="none" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-amber)"/>
+        <text x="780" y="46" fill="#fbbf24" font-size="8" text-anchor="middle">rewind · scope 变 / 接口变</text>
+
+        <!-- ============ FORWARD ARROWS (between nodes) ============ -->
+        <line x1="170" y1="138" x2="228" y2="138" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="360" y1="138" x2="418" y2="138" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="550" y1="138" x2="608" y2="138" stroke="#fb7185" stroke-width="2.2" marker-end="url(#arrowhead)"/>
+        <line x1="750" y1="138" x2="808" y2="138" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <line x1="940" y1="138" x2="998" y2="138" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- ============ DIMENSION CHIPS above each arrow ============
+             A=artifacts  S=schema  C=contract-fresh  D=dp-gate  T=tasks  P=tests -->
+        <!-- A: exploring->specifying [A] -->
+        <rect x="193" y="118" width="14" height="10" rx="2" fill="#22d3ee"/><text x="200" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">A</text>
+        <!-- B: specifying->bridging [A,S] -->
+        <rect x="375" y="118" width="14" height="10" rx="2" fill="#22d3ee"/><text x="382" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">A</text>
+        <rect x="391" y="118" width="14" height="10" rx="2" fill="#34d399"/><text x="398" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">S</text>
+        <!-- C: bridging->approved [A,S,C,D] ★ -->
+        <rect x="550" y="118" width="14" height="10" rx="2" fill="#22d3ee"/><text x="557" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">A</text>
+        <rect x="566" y="118" width="14" height="10" rx="2" fill="#34d399"/><text x="573" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">S</text>
+        <rect x="582" y="118" width="14" height="10" rx="2" fill="#a78bfa"/><text x="589" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">C</text>
+        <rect x="598" y="118" width="14" height="10" rx="2" fill="#fb7185"/><text x="605" y="126" fill="#fff" font-size="7.5" font-weight="700" text-anchor="middle">D</text>
+        <!-- D: approved->executing [A,C,D] -->
+        <rect x="760" y="118" width="14" height="10" rx="2" fill="#22d3ee"/><text x="767" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">A</text>
+        <rect x="776" y="118" width="14" height="10" rx="2" fill="#a78bfa"/><text x="783" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">C</text>
+        <rect x="792" y="118" width="14" height="10" rx="2" fill="#fb7185"/><text x="799" y="126" fill="#fff" font-size="7.5" font-weight="700" text-anchor="middle">D</text>
+        <!-- E: executing->closing [T,P] -->
+        <rect x="955" y="118" width="14" height="10" rx="2" fill="#fbbf24"/><text x="962" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">T</text>
+        <rect x="971" y="118" width="14" height="10" rx="2" fill="#fbbf24"/><text x="978" y="126" fill="#022" font-size="7.5" font-weight="700" text-anchor="middle">P</text>
+
+        <!-- ============ STATE NODES ============ -->
+        <rect x="40" y="106" width="130" height="64" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="105" y="132" fill="white" font-size="11" font-weight="600" text-anchor="middle">exploring</text>
+        <text x="105" y="148" fill="#94a3b8" font-size="8" text-anchor="middle">need-explorer</text>
+        <text x="105" y="160" fill="#64748b" font-size="7" text-anchor="middle">意图澄清</text>
+
+        <rect x="230" y="106" width="130" height="64" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="295" y="132" fill="white" font-size="11" font-weight="600" text-anchor="middle">specifying</text>
+        <text x="295" y="148" fill="#94a3b8" font-size="8" text-anchor="middle">spec-writer</text>
+        <text x="295" y="160" fill="#64748b" font-size="7" text-anchor="middle">产出 4 工件</text>
+
+        <rect x="420" y="104" width="130" height="68" rx="6" fill="rgba(136,19,55,0.45)" stroke="#fb7185" stroke-width="2.5"/>
+        <text x="485" y="130" fill="white" font-size="11" font-weight="700" text-anchor="middle">bridging ★</text>
+        <text x="485" y="146" fill="#fda4af" font-size="8" text-anchor="middle">contract-builder</text>
+        <text x="485" y="159" fill="#fda4af" font-size="7" text-anchor="middle">桥接层（独创）</text>
+
+        <rect x="610" y="106" width="140" height="64" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="680" y="130" fill="white" font-size="10.5" font-weight="600" text-anchor="middle">approved-for-build</text>
+        <text x="680" y="148" fill="#94a3b8" font-size="8" text-anchor="middle">契约已批准</text>
+        <text x="680" y="160" fill="#64748b" font-size="7" text-anchor="middle">DP-3 已记录</text>
+
+        <rect x="810" y="106" width="130" height="64" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="875" y="132" fill="white" font-size="11" font-weight="600" text-anchor="middle">executing</text>
+        <text x="875" y="148" fill="#94a3b8" font-size="8" text-anchor="middle">build-executor</text>
+        <text x="875" y="160" fill="#64748b" font-size="7" text-anchor="middle">TDD / SDD</text>
+
+        <rect x="1000" y="106" width="130" height="64" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="1065" y="132" fill="white" font-size="11" font-weight="600" text-anchor="middle">closing</text>
+        <text x="1065" y="148" fill="#94a3b8" font-size="8" text-anchor="middle">release-archivist</text>
+        <text x="1065" y="160" fill="#64748b" font-size="7" text-anchor="middle">验证 + 归档</text>
+
+        <!-- ============ FAST-PATH ARCS (bottom of main row, amber dashed) ============ -->
+        <path d="M 105 170 Q 105 200 200 200 Q 350 200 420 170" fill="none" stroke="#fbbf24" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#ah-amber)"/>
+        <text x="250" y="195" fill="#fbbf24" font-size="8">hotfix 快速路径 [A]</text>
+        <path d="M 105 170 Q 105 225 300 225 Q 560 225 680 170" fill="none" stroke="#fbbf24" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#ah-amber)"/>
+        <text x="380" y="220" fill="#fbbf24" font-size="8">tweak 快速路径 [A]（跳过桥接，直接编辑）</text>
+
+        <!-- ============ DEBUGGING SIDE-PATH ============ -->
+        <line x1="875" y1="170" x2="875" y2="258" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4,3" marker-end="url(#ah-slate)"/>
+        <text x="885" y="216" fill="#94a3b8" font-size="8">bug []</text>
+        <rect x="810" y="258" width="130" height="50" rx="6" fill="rgba(30,41,59,0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="875" y="280" fill="white" font-size="11" font-weight="600" text-anchor="middle">debugging</text>
+        <text x="875" y="296" fill="#94a3b8" font-size="8" text-anchor="middle">bug-investigator</text>
+        <line x1="845" y1="308" x2="845" y2="172" stroke="#64748b" stroke-width="1.3" marker-end="url(#arrowhead)"/>
+        <text x="822" y="244" fill="#a78bfa" font-size="8" text-anchor="end">return [C]</text>
+
+        <!-- ============ ABANDONED ============ -->
+        <rect x="1000" y="258" width="130" height="50" rx="6" fill="transparent" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="1065" y="280" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">abandoned</text>
+        <text x="1065" y="296" fill="#64748b" font-size="7.5" text-anchor="middle">终态 · 不再转移</text>
+        <line x1="940" y1="170" x2="1015" y2="256" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ah-slate)"/>
+        <text x="990" y="210" fill="#94a3b8" font-size="7.5">user/升级</text>
+
+        <!-- ============ 6 DIMENSION DETAIL CARDS (row) ============ -->
+        <text x="40" y="345" fill="white" font-size="10" font-weight="600">六维度 check（scripts/guard/checks/）—— 每条转移按 TRANSITION_CHECKS 选取若干维度</text>
+
+        <!-- A artifacts-exist -->
+        <rect x="40" y="354" width="180" height="92" rx="6" fill="rgba(8,51,68,0.35)" stroke="#22d3ee" stroke-width="1.3"/>
+        <text x="50" y="372" fill="#22d3ee" font-size="9" font-weight="700">A · artifacts-exist</text>
+        <text x="50" y="388" fill="#cbd5e1" font-size="7.5">proposal / specs /</text>
+        <text x="50" y="399" fill="#cbd5e1" font-size="7.5">design / tasks 存在</text>
+        <text x="50" y="416" fill="#64748b" font-size="7">artifacts-exist.mjs</text>
+        <text x="50" y="432" fill="#64748b" font-size="7">规划工件就位检查</text>
+
+        <!-- S schema-valid -->
+        <rect x="228" y="354" width="180" height="92" rx="6" fill="rgba(6,78,59,0.35)" stroke="#34d399" stroke-width="1.3"/>
+        <text x="238" y="372" fill="#34d399" font-size="9" font-weight="700">S · schema-valid</text>
+        <text x="238" y="388" fill="#cbd5e1" font-size="7.5">内嵌 Validator</text>
+        <text x="238" y="399" fill="#cbd5e1" font-size="7.5">双语 tokenizer</text>
+        <text x="238" y="416" fill="#64748b" font-size="7">schema-valid.mjs</text>
+        <text x="238" y="432" fill="#64748b" font-size="7">spec 增量格式校验</text>
+
+        <!-- C contract-fresh ★ -->
+        <rect x="416" y="354" width="180" height="92" rx="6" fill="rgba(76,29,149,0.35)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="426" y="372" fill="#a78bfa" font-size="9" font-weight="700">C · contract-fresh ★</text>
+        <text x="426" y="388" fill="#cbd5e1" font-size="7.5">isContractFresh()</text>
+        <text x="426" y="399" fill="#cbd5e1" font-size="7.5">artifacts_hash 比对</text>
+        <text x="426" y="416" fill="#64748b" font-size="7">contract-fresh.mjs</text>
+        <text x="426" y="432" fill="#64748b" font-size="7">契约是否过时</text>
+
+        <!-- D dp-gate-passed ★ -->
+        <rect x="604" y="354" width="180" height="92" rx="6" fill="rgba(136,19,55,0.35)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="614" y="372" fill="#fb7185" font-size="9" font-weight="700">D · dp-gate-passed ★</text>
+        <text x="614" y="388" fill="#cbd5e1" font-size="7.5">dp_3_result 非空（契约）</text>
+        <text x="614" y="399" fill="#cbd5e1" font-size="7.5">dp_4_result 非空（模式）</text>
+        <text x="614" y="416" fill="#64748b" font-size="7">dp-gate-passed.mjs</text>
+        <text x="614" y="432" fill="#64748b" font-size="7">决策点门禁</text>
+
+        <!-- T tasks-complete -->
+        <rect x="792" y="354" width="180" height="92" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.3"/>
+        <text x="802" y="372" fill="#fbbf24" font-size="9" font-weight="700">T · tasks-complete</text>
+        <text x="802" y="388" fill="#cbd5e1" font-size="7.5">tasks.md checkbox</text>
+        <text x="802" y="399" fill="#cbd5e1" font-size="7.5">全部勾选</text>
+        <text x="802" y="416" fill="#64748b" font-size="7">tasks-complete.mjs</text>
+        <text x="802" y="432" fill="#64748b" font-size="7">实现完成度</text>
+
+        <!-- P tests-passing -->
+        <rect x="980" y="354" width="180" height="92" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.3"/>
+        <text x="990" y="372" fill="#fbbf24" font-size="9" font-weight="700">P · tests-passing</text>
+        <text x="990" y="388" fill="#cbd5e1" font-size="7.5">测试套件绿</text>
+        <text x="990" y="399" fill="#cbd5e1" font-size="7.5">exit 0</text>
+        <text x="990" y="416" fill="#64748b" font-size="7">tests-passing.mjs</text>
+        <text x="990" y="432" fill="#64748b" font-size="7">验证通过</text>
+
+        <!-- ============ WORKFLOW MODE SKIP + STALE DETECTION ============ -->
+        <!-- workflow mode skip -->
+        <rect x="40" y="464" width="556" height="130" rx="6" fill="rgba(15,23,42,0.5)" stroke="#1e293b" stroke-width="1.3"/>
+        <text x="55" y="484" fill="white" font-size="10" font-weight="600">workflow 模式维度跳过（applyWorkflowMode，--workflow 参数）</text>
+        <text x="55" y="506" fill="#22d3ee" font-size="9" font-weight="700">full</text><text x="100" y="506" fill="#94a3b8" font-size="8.5">→ 全维度（默认，最严）</text>
+        <text x="55" y="526" fill="#fb7185" font-size="9" font-weight="700">hotfix</text><text x="100" y="526" fill="#94a3b8" font-size="8.5">→ 跳过 S（schema-valid）；最小契约仅需 Intent Lock + Tasks + DP-3</text>
+        <text x="55" y="546" fill="#fbbf24" font-size="9" font-weight="700">tweak</text><text x="100" y="546" fill="#94a3b8" font-size="8.5">→ 跳过 S + C + A；纯配置/文档直接编辑，跳过规划+桥接</text>
+        <text x="55" y="566" fill="#cbd5e1" font-size="8">无效 workflow 值 → exit 2</text>
+        <text x="55" y="582" fill="#64748b" font-size="7.5" font-style="italic">跳过的维度标记 skipped:true, pass:true —— 不阻塞但显式留痕</text>
+
+        <!-- two-layer stale -->
+        <rect x="604" y="464" width="556" height="130" rx="6" fill="rgba(15,23,42,0.5)" stroke="#1e293b" stroke-width="1.3"/>
+        <text x="619" y="484" fill="white" font-size="10" font-weight="600">双层 stale 检测（contract-fresh 的实现哲学）</text>
+        <text x="619" y="506" fill="#a78bfa" font-size="9" font-weight="700">快层 · 哈希</text><text x="700" y="506" fill="#94a3b8" font-size="8.5">.yaml 存 artifacts_hash / contract_hash（SHA256），比对 O(1)</text>
+        <text x="619" y="526" fill="#34d399" font-size="9" font-weight="700">慢层 · 语义</text><text x="700" y="526" fill="#94a3b8" font-size="8.5">内容级：proposal scope / specs req / design 约束 / tasks 批次 变化</text>
+        <text x="619" y="548" fill="#cbd5e1" font-size="8">.yaml 注释：「Derived data. Always rebuildable from artifacts.」</text>
+        <text x="619" y="564" fill="#cbd5e1" font-size="8">丢失/损坏 → 回退到内容级检测，不依赖状态文件</text>
+        <text x="619" y="582" fill="#fbbf24" font-size="7.5" font-style="italic">drift → 「Re-run contract-builder to regenerate」→ rewind bridging</text>
+
+        <!-- ============ LEGEND ============ -->
+        <text x="40" y="625" fill="white" font-size="10" font-weight="600">维度字母</text>
+        <rect x="115" y="616" width="14" height="10" rx="2" fill="#22d3ee"/><text x="135" y="624" fill="#94a3b8" font-size="8">A=artifacts-exist</text>
+        <rect x="250" y="616" width="14" height="10" rx="2" fill="#34d399"/><text x="270" y="624" fill="#94a3b8" font-size="8">S=schema-valid</text>
+        <rect x="380" y="616" width="14" height="10" rx="2" fill="#a78bfa"/><text x="400" y="624" fill="#94a3b8" font-size="8">C=contract-fresh</text>
+        <rect x="520" y="616" width="14" height="10" rx="2" fill="#fb7185"/><text x="540" y="624" fill="#94a3b8" font-size="8">D=dp-gate-passed</text>
+        <rect x="670" y="616" width="14" height="10" rx="2" fill="#fbbf24"/><text x="690" y="624" fill="#94a3b8" font-size="8">T=tasks / P=tests</text>
+        <line x1="810" y1="621" x2="840" y2="621" stroke="#fbbf24" stroke-width="1.3" stroke-dasharray="5,4"/>
+        <text x="846" y="624" fill="#94a3b8" font-size="8">rewind / 快速路径</text>
+
+        <text x="40" y="660" fill="#475569" font-size="7.5">证据：scripts/guard/guard.mjs（TRANSITION_CHECKS + applyWorkflowMode）· scripts/guard/checks/*.mjs · scripts/lib/hash.mjs · changes/v0.6.0-fast-and-aware/.spec-superflow.yaml</text>
+        <text x="40" y="674" fill="#475569" font-size="7.5">★ bridging → approved-for-build 是最严一跳：A+S+C+D 四维度全过 + exit 0 才放行；任一失败 exit 1 拦截（硬门禁）</text>
+      </svg>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header"><div class="card-dot rose"></div><h3>核心转移 · bridging → approved-for-build</h3></div>
+        <ul>
+          <li>• <b>4 维度全要求</b>：A + S + C + D（最严一跳）</li>
+          <li>• <b>C contract-fresh</b>：artifacts_hash SHA256 比对，契约不过时</li>
+          <li>• <b>D dp-gate-passed</b>：dp_3_result 非空（用户显式批准）</li>
+          <li>• 任一失败 → guard.mjs <b>exit 1</b>，状态机不前进</li>
+          <li>• approved → executing 再验 A + C + D（契约持续有效）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot amber"></div><h3>workflow 模式 · 维度跳过</h3></div>
+        <ul>
+          <li>• <b>full</b>：全维度（默认，大型变更）</li>
+          <li>• <b>hotfix</b>（≤2 文件）：跳 S，最小契约仍需 DP-3</li>
+          <li>• <b>tweak</b>（≤4 文件 纯配置/文档）：跳 S+C+A，直接编辑</li>
+          <li>• 跳过维度标记 skipped:true 留痕，不静默</li>
+          <li>• 无效 workflow → exit 2（参数白名单 full/hotfix/tweak）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-dot violet"></div><h3>双层 stale 检测 · 防漂移</h3></div>
+        <ul>
+          <li>• <b>快层</b>：.yaml 存 artifacts_hash/contract_hash（SHA256）</li>
+          <li>• <b>慢层回退</b>：内容语义（scope/req/约束/批次变化）</li>
+          <li>• 状态文件是派生数据，损坏可从工件重建</li>
+          <li>• drift → 提示「Re-run contract-builder」→ rewind bridging</li>
+          <li>• 哈希做速度，语义做准确性，两层互补</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer">spec-superflow v0.8.9 · guard.mjs 硬门禁状态机图 · 配套报告《OpenSpec-Superpowers 桥接原理分析报告》§4.4</p>
+  </div>
+
+  <script>
+    async function copyAsImage(btn) {
+      const orig = btn.textContent;
+      try {
+        const el = document.getElementById('report-container'); const r = el.getBoundingClientRect(); const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#020617', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        btn.textContent = '✓ Copied!';
+      } catch (e) { btn.textContent = '✗ Failed'; }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+    async function downloadPNG(btn) {
+      const orig = btn.textContent; btn.textContent = '⏳ ...';
+      try {
+        const el = document.getElementById('report-container'); const r = el.getBoundingClientRect(); const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#020617', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const link = document.createElement('a'); link.download = 'bridge-02-guard-state-machine.png'; link.href = canvas.toDataURL('image/png'); link.click();
+        btn.textContent = '✓ Done!';
+      } catch (e) { btn.textContent = '✗ Failed'; }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+    async function downloadPDF(btn) {
+      const orig = btn.textContent; btn.textContent = '⏳ ...';
+      try {
+        const el = document.getElementById('report-container'); const r = el.getBoundingClientRect(); const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#020617', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const imgData = canvas.toDataURL('image/png'); const { jsPDF } = window.jspdf;
+        const orientation = canvas.width > canvas.height ? 'landscape' : 'portrait';
+        const pdf = new jsPDF({ orientation, unit: 'px', format: [canvas.width, canvas.height], hotfixes: ['px_scaling'] });
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height); pdf.save('bridge-02-guard-state-machine.pdf');
+        btn.textContent = '✓ Done!';
+      } catch (e) { btn.textContent = '✗ Failed'; }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+  </script>
+</body>
+</html>
