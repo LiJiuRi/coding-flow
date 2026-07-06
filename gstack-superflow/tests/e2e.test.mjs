@@ -9,6 +9,7 @@ import { saveState, loadState } from '../src/lib/state-loader.mjs';
 import { buildHandoff, handoffToMarkdown, computeHandoffHash } from '../src/lib/contract-builder.mjs';
 import { validateHandoff } from '../src/lib/schema.mjs';
 import { checkTransition, canExecute } from '../src/lib/guard.mjs';
+import { run } from '../src/cli/gsf.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const sampleSpec = readFileSync(join(here, '..', 'fixtures', 'sample-spec.md'), 'utf8');
@@ -52,6 +53,31 @@ test('e2e: spec → handoff → 批准 → 可执行', () => {
     // 7. handoff 文件确实存在且含字段
     assert.ok(existsSync(handoffPath));
     assert.match(readFileSync(handoffPath, 'utf8'), /邮箱\+密码登录/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('e2e CLI: gsf build-handoff → validate 走真实 CLI 边界', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'gsf-cli-e2e-'));
+  try {
+    // 写入示例 spec
+    const specPath = join(dir, 'spec.md');
+    writeFileSync(specPath, sampleSpec);
+
+    // 通过 CLI 边界 build-handoff
+    const code1 = run(['build-handoff', specPath], { cwd: dir, stdout: () => {} });
+    assert.equal(code1, 0);
+    assert.ok(existsSync(join(dir, 'handoff-contract.md')), 'handoff-contract.md 应生成');
+
+    // 状态文件应被写入：phase=bridging, handoff_path 已设
+    const state = loadState(dir);
+    assert.equal(state.phase, 'bridging');
+    assert.equal(state.handoff_path, 'handoff-contract.md');
+
+    // 通过 CLI 边界 validate（bridging 合法）
+    const code2 = run(['validate', dir], { cwd: dir, stdout: () => {} });
+    assert.equal(code2, 0);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

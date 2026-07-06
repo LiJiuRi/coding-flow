@@ -8,7 +8,7 @@
     "SessionStart": [
       {
         "type": "command",
-        "command": "node hooks/session-start.mjs"
+        "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.mjs\""
       }
     ]
   }
