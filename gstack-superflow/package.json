@@ -1,0 +1,16 @@
+{
+  "name": "gstack-superflow",
+  "version": "0.1.0",
+  "description": "融合 Gstack 规划 + Superpowers 执行的 spec-driven AI 编程工作流插件",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "gsf": "src/cli/gsf.mjs"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
