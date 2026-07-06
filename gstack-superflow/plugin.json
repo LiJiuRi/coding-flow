@@ -1,0 +1,15 @@
+{
+  "name": "gstack-superflow",
+  "version": "0.1.0",
+  "description": "融合 Gstack 规划 + Superpowers 执行的 spec-driven AI 编程工作流插件",
+  "license": "MIT",
+  "skills": ["skills/workflow-start", "skills/bridge-builder", "skills/gstack-spec", "skills/sp-writing-plans"],
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "node hooks/session-start.mjs"
+      }
+    ]
+  }
+}
