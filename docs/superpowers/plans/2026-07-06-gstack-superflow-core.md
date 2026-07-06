@@ -90,7 +90,7 @@ mkdir -p gstack-superflow/{src/lib,src/cli,skills/{workflow-start,bridge-builder
     "gsf": "src/cli/gsf.mjs"
   },
   "scripts": {
-    "test": "node --test tests/"
+    "test": "node --test"
   },
   "engines": {
     "node": ">=20"
@@ -230,12 +230,12 @@ Expected: FAIL（模块不存在 / 导入失败）。
 
 ```js
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { posix as pathPosix } from 'node:path';
 
 const STATE_FILE = '.gstack-superflow.yaml';
 
 export function stateFilePath(projectDir) {
-  return join(projectDir, STATE_FILE);
+  return pathPosix.join(projectDir, STATE_FILE);
 }
 
 export function defaultState() {
@@ -523,9 +523,9 @@ test('buildHandoff 产出合法 handoff 且 files 进入 task_slices', () => {
 test('handoffToMarkdown 输出含关键字段', () => {
   const h = buildHandoff({ spec: sampleSpec, designDoc: sampleDesign });
   const md = handoffToMarkdown(h);
-  assert.match(md, /intent_lock/);
+  assert.match(md, /Intent Lock/);
   assert.match(md, /邮箱\+密码登录/);
-  assert.match(md, /task_slices/);
+  assert.match(md, /Task Slices/);
 });
 
 test('computeHandoffHash 对同输入稳定，输入变则变', () => {
@@ -871,15 +871,15 @@ Expected: FAIL（模块不存在）。
 ```js
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { loadState } from '../src/lib/state-loader.mjs';
-import { canExecute } from '../src/lib/guard.mjs';
-import { buildHandoff, handoffToMarkdown } from '../src/lib/contract-builder.mjs';
+import { loadState } from '../lib/state-loader.mjs';
+import { canExecute } from '../lib/guard.mjs';
+import { buildHandoff, handoffToMarkdown } from '../lib/contract-builder.mjs';
 
 const VERSION = '0.1.0';
 
 export function run(argv, { cwd, stdout }) {
   const log = (s) => stdout((s ?? '') + '\n');
-  const [, sub, ...rest] = argv;
+  const [sub, ...rest] = argv;
 
   if (sub === 'state') {
     const dir = rest[0] || cwd;
