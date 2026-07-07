@@ -7,3 +7,6 @@
 [submodule "spec-superflow"]
 	path = spec-superflow
 	url = git@github.com:MageByte-Zero/spec-superflow.git
+[submodule "gstack-superflow"]
+	path = gstack-superflow
+	url = D:/2026_idea_project/gstack-superflow

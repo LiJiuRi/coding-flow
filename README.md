@@ -1,6 +1,6 @@
 # coding-flow
 
-本仓库是一个**总仓（meta repository）**，通过 Git submodule 汇聚并引用三个开源工作流（workflow）项目，便于统一拉取、对比研究与本地开发；同时收录了对这三个项目的分析报告（见 [`reports/`](./reports)）。
+本仓库是一个**总仓（meta repository）**，通过 Git submodule 汇聚并引用三个开源工作流（workflow）项目，便于统一拉取、对比研究与本地开发；同时收录了对这三个项目的分析报告（见 [`reports/`](./reports)）。此外，本仓基于对比研究**孵化了第四个工作流 `gstack-superflow`**（Gstack 规划 + Superpowers 执行的整合），同样以 submodule 形式纳入。
 
 > 总仓本身**不包含**三个子项目的源码，只在 `.gitmodules` 中记录它们的远程地址与固定 commit 指针。源码仍保留在各自的 GitHub 仓库中。
 
@@ -11,6 +11,7 @@
 | comet | [rpamis/comet](https://github.com/rpamis/comet) | `f43cf7b` | master | [comet-详细分析报告](./reports/comet-详细分析报告.md) |
 | openflow | [lininn/openflow](https://github.com/lininn/openflow) | `698fbfe9` | main | [openflow-详细分析报告](./reports/openflow-详细分析报告.md) |
 | spec-superflow | [MageByte-Zero/spec-superflow](https://github.com/MageByte-Zero/spec-superflow) | `a764f2b2` | main | [spec-superflow-详细分析报告](./reports/spec-superflow-详细分析报告.md) |
+| gstack-superflow | 本地孵化（Gstack+Superpowers 整合，待迁 GitHub） | `d210979` | main | [overview](./gstack-superflow/docs/overview.md) |
 
 横向对比见 [`reports/工作流对比分析报告.md`](./reports/工作流对比分析报告.md)。
 
@@ -22,6 +23,7 @@ coding-flow/
 ├── comet/                # submodule → rpamis/comet
 ├── openflow/             # submodule → lininn/openflow
 ├── spec-superflow/       # submodule → MageByte-Zero/spec-superflow
+├── gstack-superflow/     # submodule → 本地孵化（Gstack+Superpowers 整合，待迁 GitHub）
 └── reports/              # 本仓自有内容：项目分析报告
     ├── images/
     ├── comet-详细分析报告.md
